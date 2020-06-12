@@ -25,68 +25,67 @@ public class CompteServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	@EJB
 	private CompteService service;
-    @EJB
-    private ClientService clientService;
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
-    public CompteServlet() {
-        super();
-        // TODO Auto-generated constructor stub
-    }
+	@EJB
+	private ClientService clientService;
 
 	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+	 * @see HttpServlet#HttpServlet()
 	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		if(request.getParameter("add")!=null) {
-			int id=Integer.parseInt(request.getParameter("id"));
-			float solde=Float.parseFloat(request.getParameter("solde"));
-			Client client=clientService.getById(id);
-			Compte compte=new Compte(client,solde);////////////////
+	public CompteServlet() {
+		super();
+	}
+
+	/**
+	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
+	 *      response)
+	 */
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		if (request.getParameter("add") != null) {
+			int id = Integer.parseInt(request.getParameter("id"));
+			float solde = Float.parseFloat(request.getParameter("solde"));
+			Client client = clientService.getById(id);
+			Compte compte = new Compte(client, solde);////////////////
 			service.save(compte);
-		}
-		else if(request.getParameter("delete")!=null) {
-			Long rib=Long.valueOf(request.getParameter("rib"));
+		} else if (request.getParameter("delete") != null) {
+			Long rib = Long.valueOf(request.getParameter("rib"));
 			service.delete(rib);
 			return;
-		}
-		else if( request.getParameter("edit")!=null) {
-			Long rib=Long.valueOf(request.getParameter("rib"));
-			Compte compte=service.getById(rib);
+		} else if (request.getParameter("edit") != null) {
+			Long rib = Long.valueOf(request.getParameter("rib"));
+			Compte compte = service.getById(rib);
 			request.setAttribute("compte", compte);
-			RequestDispatcher rd=request.getRequestDispatcher("edit-compte.jsp");
+			RequestDispatcher rd = request.getRequestDispatcher("edit-compte.jsp");
 			rd.forward(request, response);
 			return;
-		}
-		else if(request.getParameter("update")!=null) {
-			Long rib=Long.valueOf(request.getParameter("rib"));
-			float solde=Float.parseFloat(request.getParameter("solde"));
-			int id=Integer.parseInt(request.getParameter("id"));
-			Client client=clientService.getById(id);
-			Compte compte=new Compte(rib,client,solde);//  //
+		} else if (request.getParameter("update") != null) {
+			Long rib = Long.valueOf(request.getParameter("rib"));
+			float solde = Float.parseFloat(request.getParameter("solde"));
+			int id = Integer.parseInt(request.getParameter("id"));
+			Client client = clientService.getById(id);
+			Compte compte = new Compte(rib, client, solde);// //
 			service.update(compte);
 		}
-		
-        HttpSession session = request.getSession();
 
-		List<Client> clients=clientService.getAll();
+		HttpSession session = request.getSession();
+
+		List<Client> clients = clientService.getAll();
 		session.setAttribute("clients", clients);
-		List<Compte> comptes=service.getAll();
+		List<Compte> comptes = service.getAll();
 		session.setAttribute("comptes", comptes);
 
 		response.sendRedirect(request.getContextPath() + "/comptes.jsp");
 
-		//RequestDispatcher rd=request.getRequestDispatcher("/comptes.jsp");
-		//rd.forward(request, response);
 		
+
 	}
 
 	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
+	 *      response)
 	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		doGet(request, response);
 	}
 

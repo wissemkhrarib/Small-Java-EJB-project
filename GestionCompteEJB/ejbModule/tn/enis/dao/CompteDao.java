@@ -15,32 +15,36 @@ import tn.enis.entities.Compte;
 @Singleton
 @LocalBean
 public class CompteDao {
-	
-	 @PersistenceContext
+
+	@PersistenceContext
 	private EntityManager em;
-    /**
-     * Default constructor. 
-     */
-    public CompteDao() {
-        // TODO Auto-generated constructor stub
-    }
-    public void save(Compte compte) {
-    	em.persist(compte);
-    }
-    public void delete(Compte compte) {
+
+	/**
+	 * Default constructor.
+	 */
+	public CompteDao() {
+	}
+
+	public void save(Compte compte) {
+		em.persist(compte);
+	}
+
+	public void delete(Compte compte) {
 		System.out.println("compte deleted");
-    	em.remove(compte);
-    }
-    public Compte getById(Long rib) {
-    	return em.find(Compte.class, rib);
-    }
-    public void update(Compte compte) {
-    	em.merge(compte);
-    }
-    public List<Compte> getAll(){
-    	//EJB-QL= H-QL=JPA-QL SQOOP
-    	return em.createQuery("SELECT cp FROM Compte cp",Compte.class).getResultList();
-    	
-    }
+		em.remove(compte);
+	}
+
+	public Compte getById(Long rib) {
+		return em.find(Compte.class, rib);
+	}
+
+	public void update(Compte compte) {
+		em.merge(compte);
+	}
+
+	public List<Compte> getAll() {
+		return em.createQuery("SELECT cp FROM Compte cp", Compte.class).getResultList();
+
+	}
 
 }
